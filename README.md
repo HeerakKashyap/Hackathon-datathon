@@ -3,6 +3,9 @@
 ## Project Overview
 This project analyzes UDISE (Unified District Information System for Education) 2024-25 datasets to derive actionable policy insights for improving public education service delivery at state and district levels. The analysis covers 2,942,946 schools across 36 states and union territories.
 
+## Watch the dataset overview video: [Link](https://drive.google.com/file/d/1Dwh5R3MlQdEyC0Erke6tpOjKEkn0EgxP/view?usp=sharing)
+
+
 ## Problem Statement
 How can open data be leveraged to design targeted, state/district level interventions that measurably improve public service delivery?
 
@@ -20,7 +23,7 @@ How can open data be leveraged to design targeted, state/district level interven
 │   └── 00_comprehensive_dashboard.html  # Main interactive dashboard
 ├── reports/                # Policy recommendations
 │   └── Policy_Recommendations_UDISE_2024-25.md
-├── create_visualizations.py  # Visualization generation script (main execution)
+├── visualization.py  # Visualization generation script (main execution)
 └── requirements.txt        # Python dependencies
 ```
 

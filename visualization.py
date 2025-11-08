@@ -1,7 +1,4 @@
-"""
-Create Visualizations from UDISE 2024-25 Data
-Generates charts and interactive dashboard
-"""
+
 
 import pandas as pd
 import numpy as np
@@ -15,18 +12,13 @@ print("=" * 80)
 print("CREATING VISUALIZATIONS - UDISE 2024-25")
 print("=" * 80)
 
-# Create output directory
 output_dir = Path('visualizations')
 output_dir.mkdir(exist_ok=True)
 
-# Load data
 print("\nLoading data...")
 df = pd.read_csv('data/processed/merged_2024-25.csv', low_memory=False)
 print(f"Loaded: {df.shape[0]:,} schools")
 
-# ============================================================================
-# 1. STATE-WISE SCHOOL DISTRIBUTION
-# ============================================================================
 print("\n1. Creating state-wise school distribution chart...")
 
 state_counts = df['state'].value_counts().reset_index()
@@ -51,9 +43,6 @@ fig1.update_layout(
 fig1.write_html(str(output_dir / '01_state_school_distribution.html'))
 print("   Saved: 01_state_school_distribution.html")
 
-# ============================================================================
-# 2. RURAL-URBAN DISTRIBUTION
-# ============================================================================
 print("\n2. Creating rural-urban distribution chart...")
 
 ru_counts = df['rural_urban'].value_counts().sort_index()
@@ -76,9 +65,7 @@ fig2.update_layout(height=500)
 fig2.write_html(str(output_dir / '02_rural_urban_distribution.html'))
 print("   Saved: 02_rural_urban_distribution.html")
 
-# ============================================================================
-# 3. STATE-WISE RURAL-URBAN BREAKDOWN
-# ============================================================================
+
 print("\n3. Creating state-wise rural-urban breakdown...")
 
 state_ru = df.groupby(['state', 'rural_urban']).size().reset_index(name='count')
@@ -101,9 +88,7 @@ fig3.update_layout(
 fig3.write_html(str(output_dir / '03_state_rural_urban.html'))
 print("   Saved: 03_state_rural_urban.html")
 
-# ============================================================================
-# 4. DISTRICT-WISE DISTRIBUTION (Top States)
-# ============================================================================
+
 print("\n4. Creating district-wise distribution for top states...")
 
 top_states = state_counts.head(5)['State'].tolist()
@@ -126,9 +111,7 @@ fig4.update_layout(
 fig4.write_html(str(output_dir / '04_top_districts.html'))
 print("   Saved: 04_top_districts.html")
 
-# ============================================================================
-# 5. SCHOOL TYPE DISTRIBUTION
-# ============================================================================
+
 print("\n5. Creating school type distribution...")
 
 if 'school_type' in df.columns:
@@ -148,9 +131,6 @@ if 'school_type' in df.columns:
     fig5.write_html(str(output_dir / '05_school_types.html'))
     print("   Saved: 05_school_types.html")
 
-# ============================================================================
-# 6. SCHOOL CATEGORY DISTRIBUTION
-# ============================================================================
 print("\n6. Creating school category distribution...")
 
 if 'school_category' in df.columns:
@@ -171,12 +151,8 @@ if 'school_category' in df.columns:
     fig6.write_html(str(output_dir / '06_school_categories.html'))
     print("   Saved: 06_school_categories.html")
 
-# ============================================================================
-# 7. STATE-WISE SCHOOL DENSITY (Schools per 1000 sq km approximation)
-# ============================================================================
 print("\n7. Creating state-wise school density visualization...")
 
-# Calculate schools per state (already have this)
 state_density = state_counts.copy()
 state_density['Density_Rank'] = state_density['School_Count'].rank(ascending=False)
 
@@ -198,9 +174,6 @@ fig7.update_layout(
 fig7.write_html(str(output_dir / '07_state_density.html'))
 print("   Saved: 07_state_density.html")
 
-# ============================================================================
-# 8. COMPREHENSIVE DASHBOARD
-# ============================================================================
 print("\n8. Creating comprehensive interactive dashboard...")
 
 # Create subplots
@@ -262,9 +235,8 @@ fig_dashboard.update_xaxes(tickangle=-45, row=2, col=2)
 fig_dashboard.write_html(str(output_dir / '00_comprehensive_dashboard.html'))
 print("   Saved: 00_comprehensive_dashboard.html")
 
-# ============================================================================
-# 9. STATE COMPARISON TABLE
-# ============================================================================
+# STATE COMPARISON TABLE
+
 print("\n9. Creating state comparison summary...")
 
 state_summary = df.groupby('state').agg({
@@ -275,7 +247,7 @@ state_summary['Urban_Schools'] = df.groupby('state')['rural_urban'].apply(lambda
 state_summary['Rural_Percentage'] = (state_summary['Rural_Schools'] / state_summary['Total_Schools'] * 100).round(1)
 state_summary = state_summary.sort_values('Total_Schools', ascending=False).reset_index()
 
-# Create interactive table
+# interactive table
 fig_table = go.Figure(data=[go.Table(
     header=dict(
         values=['State', 'Total Schools', 'Rural Schools', 'Urban Schools', 'Rural %'],
@@ -304,32 +276,5 @@ fig_table.update_layout(
 fig_table.write_html(str(output_dir / '08_state_comparison_table.html'))
 print("   Saved: 08_state_comparison_table.html")
 
-# Save summary to CSV
 state_summary.to_csv(output_dir / 'state_summary.csv', index=False)
 print("   Saved: state_summary.csv")
-
-# ============================================================================
-# SUMMARY
-# ============================================================================
-print("\n" + "=" * 80)
-print("VISUALIZATION CREATION COMPLETE!")
-print("=" * 80)
-print(f"\nGenerated {len(list(output_dir.glob('*.html')))} visualization files:")
-for i, file in enumerate(sorted(output_dir.glob('*.html')), 1):
-    print(f"  {i}. {file.name}")
-
-print(f"\nAll visualizations saved to: {output_dir.absolute()}")
-print("\nKey visualizations:")
-print("  - 00_comprehensive_dashboard.html (Main dashboard)")
-print("  - 01_state_school_distribution.html (State comparison)")
-print("  - 02_rural_urban_distribution.html (Rural-Urban breakdown)")
-print("  - 08_state_comparison_table.html (Detailed state table)")
-
-print("\n" + "=" * 80)
-print("Next steps:")
-print("1. Open the HTML files in a web browser to view visualizations")
-print("2. Use 00_comprehensive_dashboard.html as your main dashboard")
-print("3. Include these in your hackathon submission")
-print("4. Create policy recommendations based on these insights")
-print("=" * 80)
-

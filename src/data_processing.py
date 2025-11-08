@@ -1,8 +1,3 @@
-"""
-Data Processing Module for UDISE Education Dataset
-Handles loading, cleaning, and preprocessing of education data
-"""
-
 import pandas as pd
 import numpy as np
 import os
@@ -56,7 +51,6 @@ class UDISEDataProcessor:
         """Load enrolment data from CSV files in zip archives"""
         enrolment_zips = []
         
-        # Find zip files
         base_path = self.data_dir / 'UDISE Education Dataset-20251108T185729Z-1-001' / 'UDISE Education Dataset' / f'UDISE {year}'
         
         if file_num:
@@ -65,7 +59,6 @@ class UDISEDataProcessor:
             if zip_path.exists():
                 enrolment_zips.append(zip_path)
         else:
-            # Load both enrolment files
             for num in [1, 2]:
                 pattern = f'enrolment_data_{num}_All State_{year}.zip'
                 zip_path = base_path / pattern
@@ -125,7 +118,6 @@ class UDISEDataProcessor:
         """Load school profile data from zip archives"""
         profile_zips = []
         
-        # Find zip files
         base_path = self.data_dir / 'UDISE Education Dataset-20251108T185729Z-1-001' / 'UDISE Education Dataset' / f'UDISE {year}'
         
         if file_num:
@@ -134,7 +126,6 @@ class UDISEDataProcessor:
             if zip_path.exists():
                 profile_zips.append(zip_path)
         else:
-            # Load both profile files
             for num in [1, 2]:
                 pattern = f'profile_data_{num}_All State_{year}.zip'
                 zip_path = base_path / pattern
@@ -164,12 +155,10 @@ class UDISEDataProcessor:
         """Basic data cleaning operations"""
         if df is None:
             return None
-        
-        # Remove completely empty rows and columns
+    
         df = df.dropna(how='all')
         df = df.dropna(axis=1, how='all')
-        
-        # Convert numeric columns
+     
         numeric_cols = df.select_dtypes(include=[object]).columns
         for col in numeric_cols:
             try:
@@ -212,20 +201,17 @@ class UDISEDataProcessor:
     def process_all_data(self, year='2024-25'):
         """Process all datasets for a given year"""
         print(f"Processing UDISE data for {year}...")
-        
-        # Load all datasets
+      
         profile_df = self.load_profile_data(year)
         enrolment_df = self.load_enrolment_data(year)
         facility_df = self.load_facility_data(year)
         teacher_df = self.load_teacher_data(year)
-        
-        # Clean datasets
+       
         profile_df = self.clean_data(profile_df)
         enrolment_df = self.clean_data(enrolment_df)
         facility_df = self.clean_data(facility_df)
         teacher_df = self.clean_data(teacher_df)
-        
-        # Save individual cleaned datasets
+     
         if profile_df is not None:
             profile_df.to_csv(self.processed_dir / f'profile_{year}.csv', index=False)
         
@@ -238,7 +224,7 @@ class UDISEDataProcessor:
         if teacher_df is not None:
             teacher_df.to_csv(self.processed_dir / f'teacher_{year}.csv', index=False)
         
-        # Merge datasets
+    
         if profile_df is not None:
             merged_df = self.merge_datasets(profile_df, enrolment_df, facility_df, teacher_df)
             merged_df.to_csv(self.processed_dir / f'merged_{year}.csv', index=False)
@@ -250,7 +236,3 @@ class UDISEDataProcessor:
 
 if __name__ == "__main__":
     processor = UDISEDataProcessor()
-    # Process data when datasets are available
-    # processor.process_all_data('2024-25')
-    # processor.process_all_data('2023-24')
-

@@ -1,8 +1,3 @@
-"""
-Visualization Module for Education Policy Dashboard
-Creates interactive and static visualizations
-"""
-
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -22,7 +17,6 @@ class EducationVisualizer:
         import os
         os.makedirs(output_dir, exist_ok=True)
         
-        # Set style
         sns.set_style("whitegrid")
         plt.rcParams['figure.figsize'] = (12, 6)
     
@@ -31,8 +25,7 @@ class EducationVisualizer:
         """Create bar chart comparing states on a metric"""
         if self.df is None or metric_col not in self.df.columns:
             return None
-        
-        # Find state column
+  
         state_col = None
         for col in ['State', 'state', 'STATE', 'State_Name']:
             if col in self.df.columns:
@@ -41,12 +34,10 @@ class EducationVisualizer:
         
         if not state_col:
             return None
-        
-        # Aggregate by state
+  
         state_data = self.df.groupby(state_col)[metric_col].sum().reset_index()
         state_data = state_data.sort_values(metric_col, ascending=ascending).head(top_n)
-        
-        # Create plotly figure
+
         fig = px.bar(state_data, x=state_col, y=metric_col,
                     title=title,
                     labels={state_col: 'State', metric_col: metric_col.replace('_', ' ').title()},
@@ -76,8 +67,7 @@ class EducationVisualizer:
         
         if not district_col:
             return None
-        
-        # Create pivot table
+     
         pivot_data = self.df.pivot_table(
             values=metric_col,
             index=state_col,
@@ -85,7 +75,7 @@ class EducationVisualizer:
             aggfunc='mean'
         )
         
-        # Create heatmap
+   
         fig = px.imshow(pivot_data,
                        labels=dict(x="District", y="State", color=metric_col),
                        title=f"District-wise {metric_col.replace('_', ' ').title()} Heatmap",
@@ -98,8 +88,7 @@ class EducationVisualizer:
         """Visualize gender parity across states/districts"""
         if self.df is None:
             return None
-        
-        # Find gender columns
+       
         if girls_col is None:
             girls_col = [col for col in self.df.columns if 'girl' in col.lower() or 'female' in col.lower()]
         if boys_col is None:
@@ -108,7 +97,6 @@ class EducationVisualizer:
         if not girls_col or not boys_col:
             return None
         
-        # Find state column
         state_col = None
         for col in ['State', 'state', 'STATE', 'State_Name']:
             if col in self.df.columns:

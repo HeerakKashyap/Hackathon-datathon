@@ -12,11 +12,9 @@ print("=" * 80)
 print("CREATING VISUALIZATIONS - UDISE 2024-25")
 print("=" * 80)
 
-# Create output directory
 output_dir = Path('visualizations')
 output_dir.mkdir(exist_ok=True)
 
-# Load data
 print("\nLoading data...")
 df = pd.read_csv('data/processed/merged_2024-25.csv', low_memory=False)
 print(f"Loaded: {df.shape[0]:,} schools")

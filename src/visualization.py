@@ -106,7 +106,6 @@ class EducationVisualizer:
         if not state_col:
             return None
         
-        # Calculate GPI by state
         state_gender = self.df.groupby(state_col).agg({
             girls_col[0] if isinstance(girls_col, list) else girls_col: 'sum',
             boys_col[0] if isinstance(boys_col, list) else boys_col: 'sum'
@@ -114,16 +113,14 @@ class EducationVisualizer:
         
         state_gender['GPI'] = state_gender[girls_col[0] if isinstance(girls_col, list) else girls_col] / \
                              (state_gender[boys_col[0] if isinstance(boys_col, list) else boys_col] + 1e-10)
-        
-        # Create visualization
+      
         fig = px.bar(state_gender, x=state_col, y='GPI',
                     title='Gender Parity Index by State',
                     labels={'GPI': 'Gender Parity Index (Girls/Boys)', state_col: 'State'},
                     color='GPI',
                     color_continuous_scale='RdYlGn',
                     color_continuous_midpoint=1.0)
-        
-        # Add reference line at 1.0
+       
         fig.add_hline(y=1.0, line_dash="dash", line_color="red", 
                      annotation_text="Parity Line")
         
@@ -142,8 +139,7 @@ class EducationVisualizer:
         
         if not facility_cols:
             return None
-        
-        # Find state column
+     
         state_col = None
         for col in ['State', 'state', 'STATE', 'State_Name']:
             if col in self.df.columns:
@@ -153,9 +149,8 @@ class EducationVisualizer:
         if not state_col:
             return None
         
-        # Calculate coverage percentage by state
         facility_coverage = []
-        for facility in facility_cols[:5]:  # Limit to 5 facilities
+        for facility in facility_cols[:5]:  
             state_facility = self.df.groupby(state_col).agg({
                 facility: lambda x: (x > 0).sum() if x.dtype in ['int64', 'float64'] else x.notna().sum()
             }).reset_index()
@@ -165,8 +160,7 @@ class EducationVisualizer:
             facility_coverage.append(state_facility)
         
         coverage_df = pd.concat(facility_coverage, ignore_index=True)
-        
-        # Create grouped bar chart
+       
         fig = px.bar(coverage_df, x=state_col, y='coverage_pct', color='facility',
                     title='Facility Coverage by State',
                     labels={'coverage_pct': 'Coverage Percentage (%)', state_col: 'State'},
@@ -181,8 +175,7 @@ class EducationVisualizer:
         if self.df is None:
             return None
         
-        # This will be implemented based on actual data structure
-        # Placeholder for now
+
         pass
     
     def create_dashboard(self, output_file='dashboard.html'):
@@ -190,7 +183,7 @@ class EducationVisualizer:
         if self.df is None:
             return None
         
-        # Create subplots
+  
         fig = make_subplots(
             rows=2, cols=2,
             subplot_titles=('State Comparison', 'Gender Parity', 
@@ -199,7 +192,7 @@ class EducationVisualizer:
                    [{"type": "bar"}, {"type": "scatter"}]]
         )
         
-        # Add visualizations (placeholder - to be filled based on actual data)
+     
         
         fig.update_layout(
             title_text="Education Policy Dashboard",
@@ -215,12 +208,11 @@ class EducationVisualizer:
         if self.df is None:
             return None
         
-        # This will compare 2023-24 vs 2024-25 data
         pass
 
 
 if __name__ == "__main__":
-    # Example usage
+    
     visualizer = EducationVisualizer()
-    # visualizer.plot_state_comparison('Total_Students')
+ 
 

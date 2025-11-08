@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb_checkpoints
+
+# Data files - exclude large raw datasets
+data/raw/*
+!data/raw/.gitkeep
+
+# Exclude very large processed CSV files (too large for GitHub)
+data/processed/*.csv
+# Keep only small summary files
+!visualizations/state_summary.csv
+
+# Keep visualizations for submission
+# visualizations/*.html - KEEP THESE FOR SUBMISSION
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Reports (keep template, ignore generated)
+reports/*.pdf
+reports/*.docx
+

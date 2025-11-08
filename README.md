@@ -15,7 +15,6 @@ How can open data be leveraged to design targeted, state/district level interven
 ├── data/                    # Raw and processed datasets
 │   ├── raw/                # Original downloaded datasets
 │   └── processed/          # Cleaned and merged datasets
-├── notebooks/              # Jupyter notebooks for analysis
 ├── src/                    # Python scripts
 │   ├── data_processing.py  # Data loading and preprocessing
 │   ├── analysis.py         # Statistical and ML analysis
@@ -24,7 +23,7 @@ How can open data be leveraged to design targeted, state/district level interven
 │   └── 00_comprehensive_dashboard.html  # Main interactive dashboard
 ├── reports/                # Policy recommendations
 │   └── Policy_Recommendations_UDISE_2024-25.md
-├── create_visualizations.py  # Visualization generation script
+├── visualizations.py  # Visualization generation script - main script
 └── requirements.txt        # Python dependencies
 ```
 

@@ -1,7 +1,4 @@
-"""
-Create Visualizations from UDISE 2024-25 Data
-Generates charts and interactive dashboard
-"""
+
 
 import pandas as pd
 import numpy as np
